@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 import Icon from "@/components/ui/icon";
 
@@ -58,6 +60,7 @@ const Index = () => {
   const [filter, setFilter] = useState<"all" | "active" | "archived">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -243,6 +246,18 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-6 py-8">
+        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "cards" | "table")} className="mb-6">
+          <TabsList>
+            <TabsTrigger value="cards">
+              <Icon name="LayoutGrid" size={16} className="mr-2" />
+              Карточки
+            </TabsTrigger>
+            <TabsTrigger value="table">
+              <Icon name="Table" size={16} className="mr-2" />
+              Таблица
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
         <div className="mb-6 space-y-4">
           <div className="relative max-w-xl">
             <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -299,7 +314,8 @@ const Index = () => {
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {viewMode === "cards" ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredPosts.map(post => (
             <Card 
               key={post.id} 
@@ -352,9 +368,87 @@ const Index = () => {
               </div>
             </Card>
           ))}
-        </div>
+          </div>
+        ) : (
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Заголовок</TableHead>
+                  <TableHead>Категория</TableHead>
+                  <TableHead>Автор</TableHead>
+                  <TableHead>Дата</TableHead>
+                  <TableHead>Статус</TableHead>
+                  <TableHead className="text-right">Действия</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPosts.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                      Нет публикаций
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredPosts.map(post => (
+                    <TableRow key={post.id} className="hover:bg-muted/50">
+                      <TableCell className="font-medium">
+                        <div className="max-w-xs">
+                          <div className="font-semibold text-[#003D7A]">{post.title}</div>
+                          <div className="text-sm text-muted-foreground line-clamp-1 mt-1">
+                            {post.content}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={post.status === "active" ? "default" : "secondary"}>
+                          {post.category}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Icon name="User" size={14} className="text-muted-foreground" />
+                          <span className="text-sm">{post.author}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Icon name="Calendar" size={14} className="text-muted-foreground" />
+                          <span className="text-sm">{new Date(post.date).toLocaleDateString('ru-RU')}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">
+                          {post.status === "active" ? "Активно" : "Архив"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => openEditDialog(post)}
+                          >
+                            <Icon name="Edit" size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleArchive(post.id)}
+                          >
+                            <Icon name="Archive" size={16} />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </Card>
+        )}
 
-        {filteredPosts.length === 0 && (
+        {filteredPosts.length === 0 && viewMode === "cards" && (
           <div className="text-center py-12">
             <Icon name="Inbox" size={48} className="mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">Нет публикаций</p>
