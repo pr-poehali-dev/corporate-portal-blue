@@ -18,6 +18,7 @@ interface Post {
   date: string;
   status: "active" | "archived";
   category: string;
+  publicationStatus: "published" | "moderation" | "rejected";
 }
 
 interface Notification {
@@ -36,7 +37,8 @@ const Index = () => {
       author: "Котикова Анастасия",
       date: "2024-10-05",
       status: "active",
-      category: "Корпоративные события"
+      category: "Корпоративные события",
+      publicationStatus: "published"
     },
     {
       id: "2",
@@ -45,7 +47,8 @@ const Index = () => {
       author: "Котикова Анастасия",
       date: "2024-10-04",
       status: "active",
-      category: "Новые политики"
+      category: "Новые политики",
+      publicationStatus: "published"
     }
   ]);
 
@@ -60,6 +63,7 @@ const Index = () => {
   const [filter, setFilter] = useState<"all" | "active" | "archived">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedPublicationStatus, setSelectedPublicationStatus] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   const [formData, setFormData] = useState({
@@ -83,7 +87,8 @@ const Index = () => {
       author: "Текущий пользователь",
       date: new Date().toISOString().split("T")[0],
       status: "active",
-      category: formData.category
+      category: formData.category,
+      publicationStatus: "moderation"
     };
 
     setPosts([newPost, ...posts]);
@@ -155,8 +160,9 @@ const Index = () => {
       p.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.author.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "all" || p.category === selectedCategory;
+    const matchesPublicationStatus = selectedPublicationStatus === "all" || p.publicationStatus === selectedPublicationStatus;
     
-    return matchesStatus && matchesSearch && matchesCategory;
+    return matchesStatus && matchesSearch && matchesCategory && matchesPublicationStatus;
   });
 
   return (
@@ -289,6 +295,38 @@ const Index = () => {
               </Button>
             ))}
           </div>
+
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-sm font-medium text-muted-foreground">Статус:</span>
+            <Button
+              variant={selectedPublicationStatus === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedPublicationStatus("all")}
+            >
+              Все
+            </Button>
+            <Button
+              variant={selectedPublicationStatus === "published" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedPublicationStatus("published")}
+            >
+              Опубликовано
+            </Button>
+            <Button
+              variant={selectedPublicationStatus === "moderation" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedPublicationStatus("moderation")}
+            >
+              На модерации
+            </Button>
+            <Button
+              variant={selectedPublicationStatus === "rejected" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedPublicationStatus("rejected")}
+            >
+              Отказано
+            </Button>
+          </div>
         </div>
 
         <div className="mb-6 flex gap-2">
@@ -344,6 +382,10 @@ const Index = () => {
                 <span>•</span>
                 <Icon name="Calendar" size={16} />
                 <span>{new Date(post.date).toLocaleDateString('ru-RU')}</span>
+              </div>
+
+              <div className="text-sm font-medium" style={{ color: post.publicationStatus === 'published' ? '#22c55e' : post.publicationStatus === 'moderation' ? '#f59e0b' : '#ef4444' }}>
+                Статус: {post.publicationStatus === 'published' ? 'Опубликовано' : post.publicationStatus === 'moderation' ? 'На модерации' : 'Отказано'}
               </div>
             </Card>
           ))}
