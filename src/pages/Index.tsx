@@ -172,7 +172,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Icon name="Layers" size={32} className="text-white" />
-              <h1 className="text-3xl font-bold">Мои публикации</h1>
+              <h1 className="text-3xl font-bold">Публикации</h1>
             </div>
             
             <div className="flex items-center gap-4">
@@ -444,13 +444,24 @@ const Index = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => openEditDialog(post)}
-                        >
-                          <Icon name="Edit" size={16} />
-                        </Button>
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => openEditDialog(post)}
+                            title="Редактировать"
+                          >
+                            <Icon name="Edit" size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleArchive(post.id)}
+                            title={post.status === "active" ? "Архивировать" : "Восстановить"}
+                          >
+                            <Icon name="Archive" size={16} />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
