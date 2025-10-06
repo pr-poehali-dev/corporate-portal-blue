@@ -56,12 +56,16 @@ const Index = () => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [filter, setFilter] = useState<"all" | "active" | "archived">("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     category: ""
   });
+
+  const allCategories = Array.from(new Set(posts.map(p => p.category)));
 
   const handleCreatePost = () => {
     if (!formData.title || !formData.content || !formData.category) {
@@ -141,8 +145,15 @@ const Index = () => {
   };
 
   const filteredPosts = posts.filter(p => {
-    if (filter === "all") return true;
-    return p.status === filter;
+    const matchesStatus = filter === "all" || p.status === filter;
+    const matchesSearch = 
+      searchQuery === "" ||
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.author.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || p.category === selectedCategory;
+    
+    return matchesStatus && matchesSearch && matchesCategory;
   });
 
   return (
@@ -232,6 +243,39 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-6 py-8">
+        <div className="mb-6 space-y-4">
+          <div className="relative max-w-xl">
+            <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск по заголовку, содержанию или автору..."
+              className="pl-10 h-12"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-sm font-medium text-muted-foreground">Категория:</span>
+            <Button
+              variant={selectedCategory === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory("all")}
+            >
+              Все
+            </Button>
+            {allCategories.map(cat => (
+              <Button
+                key={cat}
+                variant={selectedCategory === cat ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         <div className="mb-6 flex gap-2">
           <Button
             variant={filter === "all" ? "default" : "outline"}
