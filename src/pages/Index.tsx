@@ -33,7 +33,7 @@ const Index = () => {
       id: "1",
       title: "Квартальные результаты Q3 2024",
       content: "Компания показала рост выручки на 23% по сравнению с прошлым кварталом. Команда продаж превысила план на 15%.",
-      author: "Иван Петров",
+      author: "Котикова Анастасия",
       date: "2024-10-05",
       status: "active",
       category: "Корпоративные события"
@@ -42,7 +42,7 @@ const Index = () => {
       id: "2",
       title: "Новая корпоративная политика отпусков",
       content: "С 1 ноября вводятся изменения в порядок согласования отпусков. Подробности в прикрепленном документе.",
-      author: "Мария Сидорова",
+      author: "Котикова Анастасия",
       date: "2024-10-04",
       status: "active",
       category: "Новые политики"
@@ -166,7 +166,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Icon name="Layers" size={32} className="text-white" />
-              <h1 className="text-3xl font-bold">LYBLYKOTIKOV</h1>
+              <h1 className="text-3xl font-bold">Мои публикации</h1>
             </div>
             
             <div className="flex items-center gap-4">
