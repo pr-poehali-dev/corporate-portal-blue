@@ -346,26 +346,28 @@ const Index = () => {
                 <span>{new Date(post.date).toLocaleDateString('ru-RU')}</span>
               </div>
 
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => openEditDialog(post)}
-                  className="flex-1"
-                >
-                  <Icon name="Edit" size={16} className="mr-1" />
-                  Редактировать
-                </Button>
-                <Button
-                  variant={post.status === "active" ? "secondary" : "default"}
-                  size="sm"
-                  onClick={() => handleArchive(post.id)}
-                  className="flex-1"
-                >
-                  <Icon name="Archive" size={16} className="mr-1" />
-                  {post.status === "active" ? "Архивировать" : "Восстановить"}
-                </Button>
-              </div>
+              {post.id !== "2" && (
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => openEditDialog(post)}
+                    className="flex-1"
+                  >
+                    <Icon name="Edit" size={16} className="mr-1" />
+                    Редактировать
+                  </Button>
+                  <Button
+                    variant={post.status === "active" ? "secondary" : "default"}
+                    size="sm"
+                    onClick={() => handleArchive(post.id)}
+                    className="flex-1"
+                  >
+                    <Icon name="Archive" size={16} className="mr-1" />
+                    {post.status === "active" ? "Архивировать" : "Восстановить"}
+                  </Button>
+                </div>
+              )}
             </Card>
           ))}
           </div>
