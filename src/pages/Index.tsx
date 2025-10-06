@@ -36,7 +36,7 @@ const Index = () => {
       author: "Иван Петров",
       date: "2024-10-05",
       status: "active",
-      category: "Новости"
+      category: "Корпоративные события"
     },
     {
       id: "2",
@@ -45,7 +45,7 @@ const Index = () => {
       author: "Мария Сидорова",
       date: "2024-10-04",
       status: "active",
-      category: "HR"
+      category: "Новые политики"
     }
   ]);
 
@@ -166,7 +166,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Icon name="Layers" size={32} className="text-white" />
-              <h1 className="text-3xl font-bold">Корпоративный портал</h1>
+              <h1 className="text-3xl font-bold">LYBLYKOTIKOV</h1>
             </div>
             
             <div className="flex items-center gap-4">
@@ -485,7 +485,7 @@ const Index = () => {
               <Input
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                placeholder="Например: Новости, HR, Объявления"
+                placeholder="Например: Изменение регламентов, Новые политики, Корпоративные события"
               />
             </div>
 
