@@ -249,12 +249,12 @@ const Index = () => {
         <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "cards" | "table")} className="mb-6">
           <TabsList>
             <TabsTrigger value="cards">
-              <Icon name="LayoutGrid" size={16} className="mr-2" />
-              Карточки
+              <Icon name="Newspaper" size={16} className="mr-2" />
+              Новости
             </TabsTrigger>
             <TabsTrigger value="table">
-              <Icon name="Table" size={16} className="mr-2" />
-              Таблица
+              <Icon name="Settings" size={16} className="mr-2" />
+              Настройка
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -423,22 +423,24 @@ const Index = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex gap-2 justify-end">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => openEditDialog(post)}
-                          >
-                            <Icon name="Edit" size={16} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleArchive(post.id)}
-                          >
-                            <Icon name="Archive" size={16} />
-                          </Button>
-                        </div>
+                        {post.id !== "2" && (
+                          <div className="flex gap-2 justify-end">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => openEditDialog(post)}
+                            >
+                              <Icon name="Edit" size={16} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleArchive(post.id)}
+                            >
+                              <Icon name="Archive" size={16} />
+                            </Button>
+                          </div>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))
