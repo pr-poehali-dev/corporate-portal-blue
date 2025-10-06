@@ -402,24 +402,22 @@ const Index = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        {post.id !== "2" && (
-                          <div className="flex gap-2 justify-end">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => openEditDialog(post)}
-                            >
-                              <Icon name="Edit" size={16} />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleArchive(post.id)}
-                            >
-                              <Icon name="Archive" size={16} />
-                            </Button>
-                          </div>
-                        )}
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => openEditDialog(post)}
+                          >
+                            <Icon name="Edit" size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleArchive(post.id)}
+                          >
+                            <Icon name="Archive" size={16} />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
